@@ -11,24 +11,13 @@ in
   packages = [
     pkgs.nodejs_22  # Entspricht Node 24 aus dem devcontainer
     pkgs.pnpm      # Für package management
-    # Minimale System dependencies für Puppeteer/Chrome
-    pkgs.gtk3
-    pkgs.libnotify
-    pkgs.nss
-    pkgs.alsa-lib
-    pkgs.xorg.libXScrnSaver
-    pkgs.gnome2.GConf    # GConf aus dem GNOME2 namespace
-    # Chromium für Puppeteer (da Chrome nicht direkt in nixpkgs verfügbar)
-    pkgs.chromium
   ];
 
   # Sets environment variables in the workspace
   
 
   env = pkgs.lib.recursiveUpdate {
-    # Puppeteer soll das System-Chromium nutzen
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true";
-    PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+    TEST = "true";
   } secrets;
   
   idx = {
@@ -59,14 +48,12 @@ in
     workspace = {
       # Runs when a workspace is first created
       onCreate = {
-        # install-pnpm = "npm install -g pnpm";
-        # install-deps = "pnpm install";
-        # build-packages = "pnpm build:packages";
+        install-deps = "pnpm install";
       };
       
       # Runs when the workspace is (re)started
       onStart = {
-        # dev-server = "pnpm dev";
+        dev-server = "pnpm dev";
       };
     };
   };
